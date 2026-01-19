@@ -1,0 +1,502 @@
+<!--LAT 后台面板 演示页，无实际操作功能-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://bypass.ceo/icon.ico" type="image/x-icon">
+    <title>LAT Dashboard</title>
+    <style>
+        :root {
+            --primary-bg: #0f0f0f;
+            --accent-color: #d32f2f;
+            --accent-hover: #f44336;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--primary-bg);
+        }
+        
+        .background-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.7);
+            transition: background-image 0.5s ease;
+        }
+        
+        .glass-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            background: var(--glass-bg);
+            z-index: -1;
+        }
+        
+        .fluid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            opacity: 0.4;
+            background: linear-gradient(45deg, #1a0000, #0f0f0f, #0a0a0a, #0f0f0f);
+            background-size: 400% 400%;
+            animation: gradientFlow 20s ease infinite;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .login-container {
+            background: rgba(40, 40, 40, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 380px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(120, 0, 0, 0.25);
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 2px solid rgba(120, 0, 0, 0.3);
+            box-shadow: 0 0 25px rgba(120, 0, 0, 0.2);
+            transition: all 0.4s ease;
+            filter: brightness(1.1);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(150, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 24px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 12px 0;
+            border: none;
+            border-radius: 8px;
+            background: rgba(60, 60, 60, 0.4);
+            color: var(--text-primary);
+            box-sizing: border-box;
+            font-size: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.3);
+        }
+        
+        input[type="text"]::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            justify-content: center;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+        
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(211, 47, 47, 0.4);
+        }
+        
+        .accent {
+            color: var(--accent-color);
+        }
+        
+        .bg-settings {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        
+        .bg-btn {
+            background: rgba(80, 80, 200, 0.2);
+            color: #4a86e8;
+            border: 1px solid #4a86e8;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            width: auto;
+            margin: 0;
+        }
+        
+        .bg-btn:hover {
+            background: #4a86e8;
+            color: white;
+            transform: none;
+            box-shadow: 0 0 10px rgba(74, 134, 232, 0.3);
+        }
+        
+        .background-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(40, 40, 40, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .modal-title {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: var(--text-primary);
+        }
+        
+        .bg-preview {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(60, 60, 60, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 15px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(40, 167, 69, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 1001;
+            display: none;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="background-wrapper">
+        <div class="background-image" id="backgroundImage"></div>
+        <div class="glass-overlay"></div>
+        <div class="fluid-bg"></div>
+    </div>
+    
+    <div class="bg-settings">
+        <button class="bg-btn" onclick="openBackgroundModal()">更换背景</button>
+    </div>
+    
+    <div class="login-container">
+        <img src="https://bypass.ceo/bypass.ceo.png" alt="LAT Logo" class="logo">
+        <h1>LAT <span class="accent">Dashboard</span></h1>
+        <form id="loginForm">
+            <input type="text" name="token" id="tokenInput" placeholder="请输入您的Admin Token(示例页Token:Admin)" required>
+            <div class="checkbox-group">
+                <input type="checkbox" id="remember" name="remember" value="1">
+                <label for="remember">记住登录状态 (30天)</label>
+            </div>
+            <button type="submit">登录</button>
+        </form>
+    </div>
+
+    <div class="background-modal" id="backgroundModal">
+        <div class="modal-content">
+            <h2 class="modal-title">自定义背景</h2>
+            <div class="bg-preview" id="bgPreview"></div>
+            <div class="form-group">
+                <input type="file" id="bgUpload" class="form-input" accept="image/*">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="bg-btn" onclick="resetBackground()" style="background: rgba(200, 50, 50, 0.2); color: var(--accent-color); border: 1px solid var(--accent-color);">重置背景</button>
+                <button type="button" class="bg-btn" onclick="closeBackgroundModal()">取消</button>
+                <button type="button" class="btn" onclick="applyBackground()" style="width: auto; margin: 0; padding: 10px 20px;">应用背景</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        操作成功！
+    </div>
+
+    <script>
+        const defaultBackground = 'https://bypass.ceo/LAT-background5.png';
+        let selectedBackground = defaultBackground;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('backgroundImage').style.backgroundImage = `url('${defaultBackground}')`;
+            document.getElementById('bgPreview').style.backgroundImage = `url('${defaultBackground}')`;
+            
+            const savedBackground = localStorage.getItem('latDashboardBackground');
+            if (savedBackground) {
+                selectedBackground = savedBackground;
+                document.getElementById('backgroundImage').style.backgroundImage = `url('${savedBackground}')`;
+                document.getElementById('bgPreview').style.backgroundImage = `url('${savedBackground}')`;
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('expired')) {
+                showMessage('登录已过期，请重新登录', 'warning');
+            }
+            if (urlParams.has('error')) {
+                showMessage('登录失败，请检查Token', 'error');
+            }
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const tokenInput = document.getElementById('tokenInput');
+            const token = tokenInput.value.trim();
+            
+            if (!token) {
+                showMessage('请输入Token', 'error');
+                return;
+            }
+            
+            if (token === 'admin') {
+                showMessage('登录成功！正在跳转...', 'success');
+                
+                if (document.getElementById('remember').checked) {
+                    localStorage.setItem('latDashboardRemember', 'true');
+                    localStorage.setItem('latDashboardToken', token);
+                }
+                
+                setTimeout(() => {
+                    showMessage('登录成功，示例页面无实际跳转', 'info');
+                }, 1500);
+            } else {
+                showMessage('Token错误，请使用: admin', 'error');
+            }
+        });
+        
+        function openBackgroundModal() {
+            document.getElementById('backgroundModal').style.display = 'block';
+        }
+        
+        function closeBackgroundModal() {
+            document.getElementById('backgroundModal').style.display = 'none';
+        }
+        
+        function resetBackground() {
+            if (confirm("确定要重置为默认背景吗？")) {
+                selectedBackground = defaultBackground;
+                document.getElementById('backgroundImage').style.backgroundImage = `url('${defaultBackground}')`;
+                document.getElementById('bgPreview').style.backgroundImage = `url('${defaultBackground}')`;
+                
+                localStorage.setItem('latDashboardBackground', defaultBackground);
+                
+                showMessage('背景已重置', 'success');
+                closeBackgroundModal();
+            }
+        }
+        
+        function applyBackground() {
+            document.getElementById('backgroundImage').style.backgroundImage = `url('${selectedBackground}')`;
+            
+            localStorage.setItem('latDashboardBackground', selectedBackground);
+            
+            showMessage('背景已应用', 'success');
+            closeBackgroundModal();
+        }
+        
+        document.getElementById('bgUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.match('image.*')) {
+                showMessage('请选择图片文件', 'error');
+                return;
+            }
+            
+            if (file.size > 5 * 1024 * 1024) {
+                showMessage('图片大小不能超过5MB', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedBackground = e.target.result;
+                document.getElementById('bgPreview').style.backgroundImage = `url(${selectedBackground})`;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        document.getElementById('backgroundModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBackgroundModal();
+            }
+        });
+        
+        function showMessage(text, type = 'info') {
+            const messageEl = document.getElementById('successMessage');
+            messageEl.textContent = text;
+            
+            if (type === 'success') {
+                messageEl.style.backgroundColor = 'rgba(40, 167, 69, 0.9)';
+            } else if (type === 'error') {
+                messageEl.style.backgroundColor = 'rgba(220, 53, 69, 0.9)';
+            } else if (type === 'warning') {
+                messageEl.style.backgroundColor = 'rgba(255, 193, 7, 0.9)';
+                messageEl.style.color = '#333';
+            } else {
+                messageEl.style.backgroundColor = 'rgba(23, 162, 184, 0.9)';
+            }
+            
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+        
+        const rememberLogin = localStorage.getItem('latDashboardRemember');
+        const savedToken = localStorage.getItem('latDashboardToken');
+        
+        if (rememberLogin === 'true' && savedToken) {
+            document.getElementById('remember').checked = true;
+            document.getElementById('tokenInput').value = savedToken;
+        }
+    </script>
+</body>
+</html>
