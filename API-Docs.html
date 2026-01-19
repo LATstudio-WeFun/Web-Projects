@@ -1,0 +1,917 @@
+<!--API Docs / 示例页-->
+<!--一个轻易简单的美观API文档界面-->
+<!--不妨点个Star呗-->
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAT Premium API | Delta API Docs</title>
+    <meta name="title" content="BYPASS.CEO" />
+    <meta name="keywords" content="LATstudio,bypass,executor bypass,delta bypass">
+    <meta name="description" content="BYPASS.CEO - #1 Executor Bypass丨Made By LATstudio" />
+    <link rel="icon" href="/icon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="/" />
+    <meta property="og:title" content="BYPASS.CEO" />
+    <meta property="og:description" content="BYPASS.CEO - #1 Executor Bypass丨Made By LATstudio" />
+    <meta property="og:image" content="/bypass.ceo.png" />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:site" content="/" />
+    <meta property="twitter:title" content="BYPASS.CEO" />
+    <meta property="twitter:description" content="BYPASS.CEO - #1 Executor Bypass丨Made By LATstudio" />
+    <meta property="twitter:image" content="/bypass.ceo.png" />
+
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --glass-bg: rgba(20, 20, 20, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shine: rgba(255, 255, 255, 0.02);
+            --card-bg: rgba(22, 22, 22, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent-primary: #6366f1;
+            
+            --code-bg: rgba(0, 0, 0, 0.3);
+            --sb-track: transparent;
+            --sb-thumb: rgba(255, 255, 255, 0.1);
+            
+            --k: #818cf8; 
+            --s: #a5b4fc; 
+            --n: #67e8f9; 
+            --b: #c084fc; 
+            --p: #71717a; 
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.4);
+            
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f0f4f8;
+            --glass-bg: rgba(255, 255, 255, 0.3);
+            --glass-border: rgba(0, 0, 0, 0.04);
+            --glass-shine: rgba(255, 255, 255, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.4);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent-primary: #4f46e5;
+            
+            --code-bg: rgba(255, 255, 255, 0.4);
+            --sb-track: transparent;
+            --sb-thumb: rgba(0, 0, 0, 0.1);
+            
+            --k: #4f46e5; 
+            --s: #0891b2; 
+            --n: #7c3aed; 
+            --b: #db2777; 
+            --p: #94a3b8; 
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 20px 40px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        ::selection { background: rgba(99, 102, 241, 0.3); color: var(--text-main); }
+        ::-moz-selection { background: rgba(99, 102, 241, 0.3); color: var(--text-main); }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--sb-thumb); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .background-fx {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            animation: float 25s infinite ease-in-out alternate;
+        }
+
+        .orb-1 { width: 60vw; height: 60vw; background: #4f46e5; top: -20%; left: -10%; }
+        .orb-2 { width: 50vw; height: 50vw; background: #ec4899; bottom: -10%; right: -10%; animation-delay: -5s; }
+        .orb-3 { width: 40vw; height: 40vw; background: #06b6d4; top: 40%; left: 30%; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(50px, 30px) rotate(10deg); }
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-inner {
+            width: 100%;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .brand span {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--glass-border);
+            transform: scale(1.05);
+        }
+
+        .main {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 140px 40px 80px;
+            flex: 1;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 100px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 5vw, 64px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 24px;
+            margin-top: 80px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--glass-border), transparent);
+        }
+
+        .stack-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            padding: 20px 28px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--glass-shine);
+        }
+
+        .method-badge {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .get { background: rgba(59, 130, 246, 0.1); color: #60a5fa; border-color: rgba(59, 130, 246, 0.2); }
+        .post { background: rgba(16, 185, 129, 0.1); color: #4ade80; border-color: rgba(16, 185, 129, 0.2); }
+
+        .endpoint {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-muted);
+            letter-spacing: -0.01em;
+            word-break: break-all;
+        }
+
+        .card-body { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+
+        .params { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        
+        .param-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--glass-shine);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            transition: border-color 0.2s;
+        }
+        
+        .param-row:hover { border-color: rgba(255,255,255,0.15); }
+
+        .p-key { font-family: var(--font-mono); font-size: 13px; color: var(--text-main); font-weight: 600; }
+        .p-desc { font-size: 13px; color: var(--text-muted); }
+        .req { font-size: 10px; font-weight: 700; color: #f87171; background: rgba(239, 68, 68, 0.1); padding: 3px 8px; border-radius: 6px; margin-left: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        .code-title {
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.8;
+            margin-top: auto;
+        }
+
+        .code-container {
+            position: relative;
+            background: var(--code-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre;
+            color: var(--text-main);
+            scrollbar-width: thin;
+            scrollbar-color: var(--sb-thumb) transparent;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+
+        .code-container:hover .copy-btn { opacity: 1; }
+        .copy-btn:hover { background: rgba(255, 255, 255, 0.2); color: var(--text-main); }
+
+        .k { color: var(--k); }
+        .s { color: var(--s); }
+        .n { color: var(--n); }
+        .b { color: var(--b); }
+        .p { color: var(--p); }
+
+        .domain-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .domain-pill {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: var(--glass-shine);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .domain-pill:hover { border-color: var(--accent-primary); color: var(--text-main); background: rgba(99, 102, 241, 0.1); transform: scale(1.02); }
+
+        .status-badge { font-weight: 700; color: #4ade80; background: rgba(74, 222, 128, 0.1); padding: 4px 12px; border-radius: 20px; font-size: 12px; border: 1px solid rgba(74, 222, 128, 0.2); }
+
+        .accordion {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .accordion:hover { border-color: var(--text-muted); }
+
+        .acc-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+        .acc-toggle:hover { background: var(--glass-shine); }
+
+        .acc-title { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: #f472b6; }
+        .acc-icon { color: var(--text-muted); transition: transform 0.3s ease; font-size: 12px; }
+        .accordion.open .acc-icon { transform: rotate(180deg); color: var(--text-main); }
+
+        .acc-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0,0,0,0.05);
+        }
+
+        .accordion.open .acc-collapse {
+            grid-template-rows: 1fr;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .acc-inner { overflow: hidden; }
+        .acc-pad { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; }
+
+        .reason-box {
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            color: #fda4af;
+            font-size: 13px;
+        }
+
+        .reason-label {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 11px;
+            font-weight: 700;
+            color: #f87171;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.05em;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding: 80px 0;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .socials { display: flex; gap: 24px; }
+        
+        .social-link { 
+            color: var(--text-muted); 
+            font-size: 22px; 
+            transition: 0.3s; 
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px; 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid transparent; 
+            text-decoration: none;
+        }
+        
+        .social-link:hover { color: var(--text-main); transform: translateY(-4px); background: var(--glass-border); border-color: var(--glass-border); }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .f-link {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        
+        .f-link:hover { color: var(--accent-primary); }
+
+        .copyright { color: var(--text-muted); font-size: 13px; opacity: 0.6; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-inner { padding: 0 20px; }
+            .main { padding: 120px 20px 60px; }
+            .hero h1 { font-size: 36px; }
+            .card-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .param-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .card-body, .acc-pad { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-fx">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="brand">
+                <img src="/bypass.ceo.png" alt="Logo">
+                <span>LAT API DOCS</span>
+            </a>
+            <button class="theme-toggle" id="themeBtn" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="main">
+        
+        <header class="hero">
+            <h1>LAT Premium Bypass<br>Delta API Docs</h1>
+            <p>快速、安全、稳定</p>
+        </header>
+
+        <div class="section-label">Endpoints</div>
+
+        <div class="stack-layout">
+            <div class="card">
+                <div class="card-header">
+                    <div class="method-badge get"><i class="fa-solid fa-link"></i> GET</div>
+                    <span class="endpoint">/bypass/premium/delta</span>
+                </div>
+                <div class="card-body">
+                    <div class="params">
+                        <div class="param-row">
+                            <span class="p-key">url<span class="req">REQUIRED</span></span>
+                            <span class="p-desc">Delta 链接</span>
+                        </div>
+                        <div class="param-row">
+                            <span class="p-key">api_key<span class="req">REQUIRED</span></span>
+                            <span class="p-desc">您的 apikey</span>
+                        </div>
+                    </div>
+                    <div class="code-title"><i class="fa-solid fa-code"></i> Request Example</div>
+                    <div class="code-container" style="color:var(--text-muted)">GET /bypass/premium/delta?url=YOUR_DELTA_LINK&api_key=YOUR_API_KEY</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="method-badge post"><i class="fa-solid fa-paper-plane"></i> POST</div>
+                    <span class="endpoint">/bypass/premium/delta</span>
+                </div>
+                <div class="card-body">
+                    <div class="params">
+                        <div class="param-row">
+                            <span class="p-key">url<span class="req">REQUIRED</span></span>
+                            <span class="p-desc">Delta 链接</span>
+                        </div>
+                        <div class="param-row">
+                            <span class="p-key">x-api-key<span class="req">REQUIRED</span></span>
+                            <span class="p-desc">您的 apikey</span>
+                        </div>
+                    </div>
+                    <div class="code-title"><i class="fa-solid fa-code"></i> Request Example</div>
+                    <div class="code-container"><span class="p">{</span>
+  <span class="k">"url"</span><span class="p">:</span> <span class="s">"YOUR_DELTA_LINK"</span><span class="p">,</span>
+  <span class="k">"x-api-key"</span><span class="p">:</span> <span class="s">"YOUR_API_KEY"</span>
+<span class="p">}</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Supported Domains</div>
+        
+        <div class="card">
+            <div class="card-body">
+                <div class="domain-tags">
+                    <span class="domain-pill">auth.platoboost.com</span>
+                    <span class="domain-pill">auth.platoboost.net</span>
+                    <span class="domain-pill">auth.platoboost.click</span>
+                    <span class="domain-pill">auth.platorelay.com</span>
+                    <span class="domain-pill">auth.platoboost.app</span>
+                    <span class="domain-pill">deltaios-executor.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-label">Response Example</div>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="status-badge">Success</span>
+            </div>
+            <div class="card-body">
+                <div class="code-container"><span class="p">{</span>
+  <span class="k">"status"</span><span class="p">:</span> <span class="s">"success"</span><span class="p">,</span>
+  <span class="k">"key"</span><span class="p">:</span> <span class="s">"Free_Example"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+            </div>
+        </div>
+
+        <div class="section-label">Error Reasons</div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">Invalid Delta Link</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"Invalid Delta Link<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            链接格式错误或不支持该链接，请检查 URL
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">apikey已过期，请续费</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"api_key已过期，请续费<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            您的apikey已到期，请查看 https://bypass.ceo/api-price 添加Owner或者代理进行续费
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">该apikey无效</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"该api_key无效<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            该apikey并不存在，请检查您的apikey是否有拼写错误
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">该链接为过期链接</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"该链接为过期链接，请重新获取新链接<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            您输入的Delta链接已过期(Expired link)，请重新获取一个新链接
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">你在短时间内已经请求过同一链接了!</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"你在短时间内已经请求过同一链接了!<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            已在短时间请求过同一链接，30秒内无法重新请求同一链接
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">API Offline</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"API Offline<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            API出现问题，可能是因为短时间内处理的链接过多导致或是代码内出现了些许问题
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion">
+            <button class="acc-toggle">
+                <span class="acc-title">F.U.C.K - BANNED</span>
+                <i class="fa-solid fa-chevron-down acc-icon"></i>
+            </button>
+            <div class="acc-collapse">
+                <div class="acc-inner">
+                    <div class="acc-pad">
+                        <div class="code-container"><span class="p">{</span>
+  <span class="k">"error"</span><span class="p">:</span> <span class="s">"F.U.C.K - BANNED Made By LATstudio<span class="k">\n</span>请加入LATstudio新主群:https://qm.qq.com/q/iKMKdB7Pgs"</span><span class="p">,</span>
+  <span class="k">"Made By"</span><span class="p">:</span> <span class="s">"LATstudio"</span><span class="p">,</span>
+  <span class="k">"Discord"</span><span class="p">:</span> <span class="s">"https://discord.gg/jEaY4etBTY"</span><span class="p">,</span>
+  <span class="k">"time"</span><span class="p">:</span> <span class="n">0.000000000000</span>
+<span class="p">}</span></div>
+                        <div class="reason-box">
+                            <span class="reason-label">Reason</span>
+                            您的 IP 已被列入L.A.T黑名单
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="socials">
+                <a href="https://discord.gg/jEaY4etBTY" target="_blank" class="social-link"><i class="fa-brands fa-discord"></i></a>
+                <a href="https://qm.qq.com/q/iKMKdB7Pgs" target="_blank" class="social-link"><i class="fa-brands fa-qq"></i></a>
+            </div>
+            
+            <div class="footer-links">
+                <a href="/" class="f-link">Home</a>
+                <a href="/api-price" class="f-link">API Price</a>
+            </div>
+
+            <div class="copyright">© LATstudio. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+      // JavaScript / API Docs / 亮暗切换 - 复制
+        const themeBtn = document.getElementById('themeBtn');
+        const icon = themeBtn.querySelector('i');
+        const html = document.documentElement;
+
+        function updateIcon(theme) {
+            icon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeBtn.addEventListener('click', (event) => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark'; // light / 选择你认为合适的
+
+            if (!document.startViewTransition) {
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+                return;
+            }
+
+            const x = event.clientX;
+            const y = event.clientY;
+            const endRadius = Math.hypot(
+                Math.max(x, innerWidth - x),
+                Math.max(y, innerHeight - y)
+            );
+
+            const transition = document.startViewTransition(() => {
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                updateIcon(newTheme);
+            });
+
+            transition.ready.then(() => {
+                const clipPath = [
+                    `circle(0px at ${x}px ${y}px)`,
+                    `circle(${endRadius}px at ${x}px ${y}px)`
+                ];
+                document.documentElement.animate(
+                    {
+                        clipPath: clipPath
+                    },
+                    {
+                        duration: 500,
+                        easing: 'ease-in',
+                        pseudoElement: '::view-transition-new(root)',
+                    }
+                );
+            });
+        });
+
+        const accordions = document.querySelectorAll('.acc-toggle');
+        accordions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const parent = btn.parentElement;
+                
+                document.querySelectorAll('.accordion').forEach(item => {
+                    if (item !== parent) item.classList.remove('open');
+                });
+
+                parent.classList.toggle('open');
+            });
+        });
+
+        document.querySelectorAll('.code-container').forEach(container => {
+            const btn = document.createElement('button');
+            btn.className = 'copy-btn';
+            btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+            btn.setAttribute('aria-label', 'Copy code');
+            
+            btn.addEventListener('click', () => {
+                const code = container.innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    btn.innerHTML = '<i class="fa-solid fa-check" style="color:#4ade80"></i>';
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+                    }, 2000);
+                });
+            });
+
+            container.appendChild(btn);
+        });
+    </script>
+</body>
+</html>
