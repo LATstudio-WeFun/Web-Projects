@@ -1,0 +1,67 @@
+<!--生成密钥的示例页-->
+<!--无用内容-->
+<!--一个最简易的密钥生成的页面-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Example Generate KEY</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    #key {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #0f0;
+    }
+    #error {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #f33;
+    }
+  </style>
+</head>
+<body>
+  <h1>Example Generate KEY</h1>
+  <button onclick="checkAPI()">Generate</button>
+  <div id="key"></div>
+  <div id="error"></div>
+
+  <script>
+//JavaScript / 生成密钥和输出什么什么的...
+    function generateKey(length = 16) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; //随机生成密钥 / KeyGen
+      let key = '';
+      for (let i = 0; i < length; i++) {
+        key += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return key;
+    }
+
+    async function checkAPI() {
+      const keyBox = document.getElementById('key');
+      const errBox = document.getElementById('error');
+      keyBox.textContent = '';
+      errBox.textContent = '';
+
+      try {
+        const res = await fetch('LAT-API'); //可更改为你的API(或者不改)
+        const text = await res.text();
+
+        if (res.status === 200 && text.trim() === 'success') { //检测是否是HTTP200且响应success / 可根据此部分进行伪请求
+          keyBox.textContent = 'success：' + generateKey(); //成功生成密钥 / 密钥是网页生成的，但是所有的密钥系统肯定不是通过网页直接生成的，除非真的很差劲的(直接通过网页生成的其实也没什么用吧...) 基本上所有的密钥系统都是通过API来生成的密钥
+        } else {
+          errBox.textContent = 'ERROR：EXAMPLE-CHECK-LOL'; //错误输出
+        }
+      } catch (e) {
+        errBox.textContent = 'LOL-CHECK';
+      }
+    }
+  </script>
+</body>
+</html>
